@@ -4,17 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "tsx mcp-server.ts",
+    "test-client": "tsx mcp-client-test.ts",
+    "mcp-inspect": "cross-env CLIENT_PORT=8080 MCP_SANDBOX_PORT=8081 mcp-inspector npx tsx mcp-server.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.30.0"
   },
   "devDependencies": {
+    "@modelcontextprotocol/inspector": "^2.3.0",
     "@types/node": "^26.2.0",
+    "cross-env": "^10.1.0",
     "tsx": "^4.23.12",
     "typescript": "^7.0.2"
   }
