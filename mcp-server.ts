@@ -11,7 +11,10 @@ const add = (op1: number, op2: number) => op1 + op2;
 const sub = (op1: number, op2: number) => op1 - op2;
 const mul = (op1: number, op2: number) => op1 * op2;
 const div = (op1: number, op2: number) => {
-  if (op2 === 0) throw new Error("Cannot divide by 0");
+  if (op2 === 0) {
+    throw new Error("Cannot divide by 0");
+  }
+
   return op1 / op2;
 };
 
@@ -24,7 +27,7 @@ server.registerTool(
   "add",
   {
     title: "Add Two Numbers",
-    description: "Add Two given numbers",
+    description: "Add two numbers and return their sum.",
     inputSchema,
   },
   async ({ op1, op2 }) => ({
@@ -36,7 +39,7 @@ server.registerTool(
   "sub",
   {
     title: "Subtract Two Numbers",
-    description: "Subtract Two given numbers",
+    description: "Subtract the second number from the first number.",
     inputSchema,
   },
   async ({ op1, op2 }) => ({
@@ -48,7 +51,7 @@ server.registerTool(
   "mul",
   {
     title: "Multiply Two Numbers",
-    description: "Multiply Two given numbers",
+    description: "Multiply two numbers and return their product.",
     inputSchema,
   },
   async ({ op1, op2 }) => ({
@@ -61,12 +64,20 @@ server.registerTool(
   {
     title: "Divide Two Numbers",
     description:
-      "Divide Two given numbers, Throws an error if the divisor is 0",
+      "Divide the first number by the second number. The divisor cannot be zero.",
     inputSchema,
   },
-  async ({ op1, op2 }) => ({
-    content: [{ type: "text", text: String(div(op1, op2)) }],
-  }),
+  async ({ op1, op2 }) => {
+    try {
+      const result = div(op1, op2);
+      return { content: [{ type: "text", text: String(result) }] };
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Unknown Error Occurred";
+
+      return { content: [{ type: "text", text: message }], isError: true };
+    }
+  },
 );
 
 const transport = new StdioServerTransport();
